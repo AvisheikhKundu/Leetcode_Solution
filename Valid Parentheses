@@ -1,50 +1,28 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
- int main(int argc, char *argv[]) {
-// function to check if a character is an opening bracket
-bool is_opening_bracket(char ch) {
-    return ch == '(' || ch == '{' || ch == '[';
-}
+class Solution {
+    
+    public boolean isValid(String s) {
+      Stack<Character> st=new Stack();
+      for(int i=0;i<s.length();i++){
+          char c=s.charAt(i);
+          if(c=='(' || c=='{' || c=='['){
+              st.push(c);
+          }
+          
+          else if(st.empty()) return false;
 
-// function to check if the given opening and closing brackets match
-bool brackets_match(char opening, char closing) {
-    if (opening == '(' && closing == ')')
-        return true;
-    if (opening == '{' && closing == '}')
-        return true;
-    if (opening == '[' && closing == ']')
-        return true;
-    return false;
-}
-
-// main function to check if the input string is valid
-bool is_valid(char* s) {
-    int len = strlen(s);
-    char stack[len];
-    int top = -1;
-
-    for (int i = 0; i < len; i++) {
-        char ch = s[i];
-
-        if (is_opening_bracket(ch)) {
-            stack[++top] = ch;
-        } else {
-            if (top == -1 || !brackets_match(stack[top], ch)) {
+            else if(st.peek()=='(' && c==')'&&!st.isEmpty()){
+                st.pop();
+            }
+            else if(st.peek()=='['&&c==']'&&!st.isEmpty()){
+                st.pop();
+            }
+            else if(st.peek()=='{'&&c=='}' &&!st.isEmpty()){
+                st.pop();
+            }
+            else{
                 return false;
             }
-            top--;
-        }
+      }
+        return st.isEmpty();
     }
-
-    return top == -1;
-}
-
-// driver code to test the implementation
-int main() {
-    char s[] = "()[]{}";
-    bool valid = is_valid(s);
-    printf("%s\n", valid ? "true" : "false");
-    return 0;
-}
 }
